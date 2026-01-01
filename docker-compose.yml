@@ -1,0 +1,40 @@
+services:
+
+  users_database:
+      image: postgres:18.1
+      container_name: ${USERS_DB_NAME}
+      environment:
+        POSTGRES_DB: ${USERS_DB_NAME}
+        POSTGRES_USER: ${POSTGRES_USER}
+        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      networks:
+        - y-network
+      volumes:
+        - users_data:/var/lib/postgresql
+        - ./init-db-users.sql:/docker-entrypoint-initdb.d/01-users.sql
+      ports:
+        - "${USERS_DB_PORT}:5432"
+
+  posts_database:
+      image: postgres:18.1
+      container_name: ${POSTS_DB_NAME}
+      environment:
+        POSTGRES_DB: ${POSTS_DB_NAME}
+        POSTGRES_USER: ${POSTGRES_USER}
+        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      networks:
+        - y-network
+      volumes:
+        - posts_data:/var/lib/postgresql
+        - ./init-db-posts.sql:/docker-entrypoint-initdb.d/01-posts.sql
+      ports:
+        - "${POSTS_DB_PORT}:5432"
+
+networks:
+  y-network:
+    name: y-network
+    # external: true
+
+volumes:
+  users_data:
+  posts_data:
