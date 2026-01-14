@@ -29,13 +29,17 @@ services:
     container_name: ${DB_SERVICE_NAME}
     environment:
       POSTGRES_DB: ${USERS_DB_NAME}
+      USERS_DB_NAME: ${USERS_DB_NAME}
+      POSTS_DB_NAME: ${POSTS_DB_NAME}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      FLYWAY_USER: ${FLYWAY_USER}
+      FLYWAY_PASSWORD: ${FLYWAY_PASSWORD}
     networks:
       - y-network
     volumes:
       - users_data:/var/lib/postgresql
-      - ./postgres/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+      - ./postgres/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
     ports:
       - "${DB_PORT}:5432"
 
